@@ -1,0 +1,1 @@
+Deep linking proxy for Mastodon, to launch your selected client automatically
