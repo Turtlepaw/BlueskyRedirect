@@ -1,7 +1,5 @@
 package dev.zwander.shared
 
-import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,24 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import dev.zwander.shared.util.openLinkInBrowser
-import dev.zwander.shared.util.prefs
-import fe.linksheet.interconnect.LinkSheetConnector
-import io.ktor.client.HttpClient
-import io.ktor.client.request.get
-import io.ktor.http.Url
-import io.ktor.http.contentType
-import io.ktor.http.fullPath
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import java.net.URLConnection
-import androidx.core.net.toUri
 
-class RedirectActivity : BaseActivity(), CoroutineScope by MainScope() {
+class RedirectActivity : BaseActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -93,125 +78,8 @@ class RedirectActivity : BaseActivity(), CoroutineScope by MainScope() {
         }
     }
 
-    private suspend fun handleLink() {
-        val url = if (intent?.action == Intent.ACTION_SEND) {
-            intent.getStringExtra(Intent.EXTRA_TEXT)
-        } else {
-            intent?.dataString
-                ?.replace("web+activity+http://", "http://")
-                ?.replace("web+activity+https://", "https://")
-                ?.replace("web+ap://", "https://")
-        }
-
-        val realReferrer = intent?.let {
-            LinkSheetConnector.getLinkSheetReferrer(intent)
-        } ?: referrer
-
-        val lastHandledLinkIsTheSame = prefs.lastHandledLink.currentValue(this) == url
-
-        val skipUrl = url?.let {
-            prefs.blocklistedDomains.currentValue(this).contains(it.toUri().host)
-        } == true
-
-        when {
-            url.isNullOrBlank() || isSpecialUrl(url) || skipUrl -> launchInBrowser()
-            prefs.openMediaInBrowser.currentValue(this) && isUrlMedia(url) -> launchInBrowser()
-            else -> {
-                prefs.selectedApp.currentValue(this).run {
-                    val intents = createIntents(url)
-
-                    if (intents.any { it.`package` == realReferrer?.host } && lastHandledLinkIsTheSame) {
-                        launchInBrowser()
-                        return@run
-                    }
-
-                    intents.forEachIndexed { index, intent ->
-                        try {
-                            startActivity(intent)
-
-                            if (!sequentialLaunch) {
-                                // Found a working launcher, short circuit out of process.
-                                return@run
-                            }
-                        } catch (e: Exception) {
-                            Log.e(packageName, "Error launching.", e)
-
-                            if (!sequentialLaunch) {
-                                launchInBrowser()
-                                return@run
-                            }
-                        }
-
-                        if (index < intents.lastIndex) {
-                            withContext(Dispatchers.IO) {
-                                delay(500)
-                            }
-                        }
-                    }
-
-                    if (!sequentialLaunch) {
-                        // Didn't find any working launchers, open browser.
-                        launchInBrowser()
-                    }
-                }
-            }
-        }
-
-        prefs.lastHandledLink.set(url)
-
-        finish()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         cancel()
-    }
-
-    private fun launchInBrowser() {
-        openLinkInBrowser(intent?.data)
-    }
-
-    private suspend fun isUrlMedia(url: String): Boolean {
-        val parsedUrl = try {
-            Url(url)
-        } catch (_: Exception) {
-            null
-        }
-
-        parsedUrl?.let {
-            val guessedType = URLConnection.guessContentTypeFromName(parsedUrl.fullPath) ?: ""
-
-            if (guessedType.startsWith("video") ||
-                guessedType.startsWith("image") ||
-                guessedType.startsWith("audio")) {
-                return true
-            }
-        }
-
-        return try {
-            val response = HttpClient().get(url)
-            val returnedType = response.contentType()?.contentType
-
-            returnedType == "video" ||
-                   returnedType == "image" ||
-                   returnedType == "audio"
-        } catch (_: Exception) {
-            false
-        }
-    }
-
-    private fun isSpecialUrl(url: String): Boolean {
-        val parsedUrl = url.toUri()
-        val path = parsedUrl.path
-
-        val specialStarters = arrayOf(
-            "oauth",
-            "auth",
-            "miauth",
-            "api",
-            "api-doc",
-        )
-
-        return specialStarters.any { path?.startsWith("/$it") == true }
     }
 }

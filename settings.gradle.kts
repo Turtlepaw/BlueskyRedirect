@@ -18,8 +18,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Fediverse Redirect"
 include(
-    ":mastodonredirect",
-    ":lemmyredirect",
-    ":peertuberedirect",
+    ":app",
     ":shared",
 )

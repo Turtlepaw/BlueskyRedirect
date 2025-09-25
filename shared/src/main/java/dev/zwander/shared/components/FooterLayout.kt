@@ -35,6 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.net.toUri
 import com.bugsnag.android.Bugsnag
 import dev.zwander.shared.LinkBlocklistActivity
 import dev.zwander.shared.R
@@ -46,7 +47,6 @@ import dev.zwander.shared.util.rememberMutablePreferenceState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tk.zwander.patreonsupportersretrieval.view.SupporterView
-import androidx.core.net.toUri
 
 private data class FooterButton(
     @StringRes val labelRes: Int,
@@ -89,10 +89,10 @@ fun FooterLayout(
                 context.openLinkNaturally("https://www.patreon.com/zacharywander".toUri())
             },
             FooterButton(
-                R.string.mastodon,
-                R.drawable.mastodon,
+                R.string.bluesky,
+                R.drawable.bluesky,
             ) {
-                context.openLinkNaturally("https://androiddev.social/@wander1236".toUri())
+                context.openLinkNaturally("https://bsky.app/profile/turtlepaw.on.computer".toUri())
             },
             FooterButton(
                 R.string.supporters,

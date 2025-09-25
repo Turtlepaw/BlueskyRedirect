@@ -7,7 +7,7 @@
         <package android:name="moe.shizuku.privileged.api" />
 
         <intent>
-            <action android:name="${applicationId}.intent.action.OPEN_FEDI_LINK" />
+            <action android:name="${applicationId}.intent.action.OPEN_BSKY" />
         </intent>
     </queries>
 
@@ -31,6 +31,13 @@
             android:excludeFromRecents="true"
             android:exported="true" />
 
+        <activity
+            android:name=".LinkSheet"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.Transparent" />
+
         <activity android:name=".RedirectActivity"
             android:exported="true"
             android:excludeFromRecents="true"
@@ -50,12 +57,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- https://akihikodaki.github.io/activity-intent/scheme.html -->
-                <data android:scheme="web+activity+http" />
-                <data android:scheme="web+activity+https" />
-
-                <!-- https://fedilinks.org/spec/en/ -->
-                <data android:scheme="web+ap" />
+                <!-- https://docs.bsky.app/docs/advanced-guides/intent-links -->
+                <data android:scheme="web+bluesky+http" />
+                <data android:scheme="web+bluesky+https" />
             </intent-filter>
         </activity>
 

@@ -1,1 +1,0 @@
-Deep linking proxy for Lemmy, to launch your selected client automatically

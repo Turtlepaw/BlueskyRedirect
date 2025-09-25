@@ -8,36 +8,28 @@ import android.content.pm.ResolveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import dev.zwander.shared.DiscoveredGroup
+import androidx.core.net.toUri
 import dev.zwander.shared.DiscoveredLaunchStrategy
 import dev.zwander.shared.LaunchStrategy
-import dev.zwander.shared.LaunchStrategyRootGroup
 import kotlin.reflect.KClass
-import androidx.core.net.toUri
 
 abstract class BaseLaunchStrategyUtils(
     applicationId: String,
-    baseGroupClass : KClass<out LaunchStrategyRootGroup>,
+    baseGroupClass: KClass<out LaunchStrategy>,
 ) {
-    protected open val launchAction = "$applicationId.intent.action.OPEN_FEDI_LINK"
+    protected open val launchAction = "$applicationId.intent.action.OPEN_BSKY_LINK"
 
-    protected open val groupedLaunchStrategies by lazy {
+    protected open val launchStrategies by lazy {
         baseGroupClass.sealedSubclasses
-            .mapNotNull { it.objectInstance }.filter { it.autoAdd }
-    }
-
-    protected open val flattenedLaunchStrategies by lazy {
-        groupedLaunchStrategies.flatMap { strategy ->
-            strategy.children.map { it.key to it }
-        }.toMap()
+            .mapNotNull { it.objectInstance }
     }
 
     @Composable
-    fun rememberSortedLaunchStrategies(): List<LaunchStrategyRootGroup> {
+    fun rememberSortedLaunchStrategies(): List<LaunchStrategy> {
         val context = LocalContext.current
 
         return remember {
-            val sortedPredefined = groupedLaunchStrategies.sortedBy {
+            val sortedPredefined = launchStrategies.sortedBy {
                 with(it) { context.label }.lowercase()
             }
 
@@ -46,11 +38,10 @@ abstract class BaseLaunchStrategyUtils(
             if (discoveredValues.isEmpty()) {
                 sortedPredefined
             } else {
-                sortedPredefined + DiscoveredGroup(
+                sortedPredefined +
                     discoveredValues.sortedBy {
                         with(it) { context.label }.lowercase()
                     }
-                )
             }
         }
     }
@@ -60,7 +51,7 @@ abstract class BaseLaunchStrategyUtils(
             return null
         }
 
-        return flattenedLaunchStrategies[key] ?: getLaunchStrategyForPackage(key)
+        return launchStrategies.find { it.key == key } ?: getLaunchStrategyForPackage(key)
     }
 
     open fun Context.discoverStrategies(): Map<String, LaunchStrategy> {

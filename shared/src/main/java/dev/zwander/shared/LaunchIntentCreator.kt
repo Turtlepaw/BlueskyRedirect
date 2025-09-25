@@ -3,6 +3,7 @@ package dev.zwander.shared
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.net.toUri
 
 sealed interface LaunchIntentCreator {
@@ -31,6 +32,20 @@ sealed interface LaunchIntentCreator {
             }
         }
 
+        data class AskEveryTimeIntentCreator(
+            override val pkg: String = "",
+            override val component: String = "",
+            override val urlTransform: (String) -> String = { it },
+        ) : ComponentIntentCreator {
+            override fun Context.createIntents(url: String): List<Intent> {
+                return listOf(
+                    Intent(this, LinkSheet::class.java)
+                        .putExtra("url", url)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                )
+            }
+        }
+
         data class ShareIntentCreator(
             override val pkg: String,
             override val component: String,
@@ -54,8 +69,12 @@ sealed interface LaunchIntentCreator {
         val baseUrl: String,
     ) : LaunchIntentCreator {
         override fun Context.createIntents(url: String): List<Intent> {
+            val newUri = url.toUri().buildUpon()
+                .authority(baseUrl)
+                .build()
+            Log.d("BaseUrlIntentCreator", "Final URL: $newUri")
             return listOf(
-                Intent(Intent.ACTION_VIEW, "$baseUrl$url".toUri())
+                Intent(Intent.ACTION_VIEW, newUri)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             )
         }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -24,6 +26,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -39,9 +42,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.zwander.shared.IShizukuService
 import dev.zwander.shared.LaunchStrategy
@@ -64,7 +67,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import rikka.shizuku.ShizukuProvider
 import kotlin.coroutines.CoroutineContext
-import androidx.core.net.toUri
 
 @Preview(showSystemUi = true)
 @Composable
@@ -124,7 +126,7 @@ fun LinkVerifyLayout(
     var loading by LinkVerificationModel.isRefreshing.collectAsMutableState()
 
     ElevatedCard(
-        modifier = modifier.padding(horizontal = 8.dp),
+        modifier = modifier.padding(horizontal = 14.dp),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.errorContainer,
@@ -132,13 +134,14 @@ fun LinkVerifyLayout(
     ) {
         Column(
             modifier = Modifier
-                .then(if (!expanded) {
-                    Modifier.clickable {
-                        expanded = true
-                    }
-                } else {
-                    Modifier
-                })
+                .then(
+                    if (!expanded) {
+                        Modifier.clickable {
+                            expanded = true
+                        }
+                    } else {
+                        Modifier
+                    })
                 .padding(8.dp)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -158,8 +161,7 @@ fun LinkVerifyLayout(
 
                 Text(
                     text = stringResource(id = R.string.link_handling),
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleMedium,
                     lineHeight = MaterialTheme.typography.headlineSmall.fontSize,
                     modifier = Modifier.weight(1f),
                 )
@@ -192,10 +194,14 @@ fun LinkVerifyLayout(
                 val buttonColors = ButtonDefaults.textButtonColors(
                     contentColor = MaterialTheme.colorScheme.error,
                     disabledContentColor = MaterialTheme.colorScheme.onErrorContainer,
-                )
+
+                    )
 
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Spacer(modifier = Modifier.size(8.dp))
 
@@ -205,36 +211,35 @@ fun LinkVerifyLayout(
                             appModel.appName,
                             appModel.appName,
                         ),
-                        textAlign = TextAlign.Center,
                     )
 
-                    Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
 
-                    if (missingDomains.isNotEmpty()) {
-                        TextButton(
-                            onClick = {
-                                showingUnverifiedDomains = true
-                            },
-                            colors = buttonColors,
-                        ) {
-                            Text(text = stringResource(id = R.string.unverified_domains))
-                        }
-                    }
-
+                    val border =
+                        BorderStroke(1.dp, MaterialTheme.colorScheme.onErrorContainer.copy(0.5f))
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        TextButton(
-                            onClick = {
-                                context.launchManualVerification()
-                            },
-                            colors = buttonColors,
-                        ) {
-                            Text(text = stringResource(id = R.string.settings))
+                        if (missingDomains.isNotEmpty()) {
+                            OutlinedButton(
+                                onClick = {
+                                    showingUnverifiedDomains = true
+                                },
+                                colors = buttonColors,
+                                border = border
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                ) {
+                                    Text(text = stringResource(id = R.string.unverified_domains))
+                                }
+                            }
                         }
 
-                        TextButton(
+                        OutlinedButton(
+
                             onClick = {
                                 scope.launch(Dispatchers.IO) {
                                     val result = context.runShizukuCommand(Dispatchers.IO) {
@@ -252,13 +257,14 @@ fun LinkVerifyLayout(
                             },
                             enabled = !loading,
                             colors = buttonColors,
+                            border = border
                         ) {
                             Text(text = stringResource(id = R.string.enable_using_shizuku))
                         }
 
                         val linkSheetStatus = rememberLinkSheetInstallationStatus()
 
-                        TextButton(
+                        OutlinedButton(
                             onClick = {
                                 context.enableWithLinkSheet(
                                     scope, linkSheet,
@@ -266,8 +272,9 @@ fun LinkVerifyLayout(
                                     refresh,
                                 )
                             },
-                            colors = buttonColors,
                             enabled = !loading,
+                            colors = buttonColors,
+                            border = border
                         ) {
                             Text(
                                 text = stringResource(
@@ -278,6 +285,16 @@ fun LinkVerifyLayout(
                                     },
                                 )
                             )
+                        }
+
+                        OutlinedButton(
+                            onClick = {
+                                context.launchManualVerification()
+                            },
+                            colors = buttonColors,
+                            border = border
+                        ) {
+                            Text(text = stringResource(id = R.string.settings))
                         }
                     }
                 }

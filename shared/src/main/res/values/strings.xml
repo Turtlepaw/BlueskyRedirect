@@ -3,6 +3,7 @@
     <string name="discovered">Discovered</string>
 
     <string name="main">Main</string>
+    <string name="android">Android</string>
     <string name="stable">Stable</string>
     <string name="canary">Canary</string>
     <string name="nightly">Nightly</string>
@@ -18,8 +19,22 @@
     <string name="unstable">Unstable</string>
     <string name="legacy">Legacy</string>
 
-    <string name="link_handling">Set Up Link Handling</string>
-    <string name="link_handling_desc">To use %1$s, you\'ll need to enable all supported links in Settings or use Shizuku or LinkSheet to do it automatically. Settings may crash when opening the App Info for %2$s, in which case Shizuku or LinkSheet will be required.</string>
+    <string name="type_post">Post</string>
+    <string name="type_list">List</string>
+    <string name="type_starter_pack">Starter Pack</string>
+    <string name="type_feed">Feed</string>
+    <string name="type_profile">Profile</string>
+
+    <string name="open_with_type">Open Bluesky %1$s with</string>
+    <string name="open_with">Open with</string>
+
+    <string name="ask_every_time">Ask every time</string>
+
+    <string name="link_handling">Setup link handling</string>
+    <string name="link_handling_desc">
+        You need to enable all supported links in Settings or use Shizuku or LinkSheet to redirect links.
+        \n\nSettings may crash when opening the App Info for %2$s, in which case Shizuku or LinkSheet will be required.
+    </string>
     <string name="enable">Enable</string>
     <string name="settings">Settings</string>
     <string name="download">Download</string>
@@ -28,7 +43,7 @@
     <string name="close">Close</string>
     <string name="scroll_to_top">Scroll to top</string>
 
-    <string name="unverified_domains">Unverified Domains</string>
+    <string name="unverified_domains">What Domains?</string>
     <string name="unverified_domains_format">Unverified Domains (%s)</string>
 
     <string name="enable_using_shizuku">Enable with Shizuku</string>
@@ -51,13 +66,13 @@
     <string name="protocol_filter">Protocol Filter</string>
 
     <string name="choose_app">Choose App</string>
-    <string name="choose_app_desc">The following apps are supported by %s. You can choose which one should be launched when handling supported links.</string>
+    <string name="choose_app_desc">Select your preferred client to open Bluesky links with.</string>
 
     <string name="options">Options</string>
     <string name="patreon">Patreon</string>
     <string name="supporters">Supporters</string>
     <string name="github">GitHub</string>
-    <string name="mastodon">Mastodon</string>
+    <string name="bluesky">Bluesky</string>
 
     <string name="reset_link_verification">Reset Link Verification</string>
     <string name="reset_link_verification_desc">Do you want to use Shizuku to reset link verification? This will only have an effect if Shizuku is running and you used Shizuku originally to enable links.</string>

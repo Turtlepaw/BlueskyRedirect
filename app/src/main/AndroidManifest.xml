@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:enableOnBackInvokedCallback="true"
+        tools:ignore="MissingApplicationIcon">
+        <activity
+            android:name="dev.zwander.shared.RedirectActivity"
+            android:exported="true">
+            <intent-filter android:label="@string/protocol_filter">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="web+bluesky" />
+            </intent-filter>
+            <intent-filter android:label="@string/http_filter">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+
+                <data android:host="bsky.app" />
+                <data android:host="catsky.social" />
+                <data android:host="deer.social" />
+                <data android:host="main.bsky.app" />
+                <data android:host="deer-social-ayla.pages.dev" />
+                <data android:host="social.daniela.lol" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
