@@ -41,6 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
@@ -160,22 +161,25 @@ private fun GroupCard(
     val isInstalled = launchStrategy.rememberIsInstalled()
     val context = LocalContext.current
 
+    val clip = if (total <= 1) RoundedCornerShape(large) else RoundedCornerShape(
+        topStart = if (index == 0) large else small,
+        topEnd = if (index == 0) large else small,
+        bottomStart = if (index == total - 1) large else small,
+        bottomEnd = if (index == total - 1) large else small
+    )
     Card(
-        modifier = modifier.clickable(
-            onClick = {
-                if (isInstalled) {
-                    onStrategySelected(launchStrategy)
-                } else if (launchStrategy.sourceUrl != null) {
-                    context.launchUrl(launchStrategy.sourceUrl!!)
+        modifier = modifier
+            .clip(clip)
+            .clickable(
+                onClick = {
+                    if (isInstalled) {
+                        onStrategySelected(launchStrategy)
+                    } else if (launchStrategy.sourceUrl != null) {
+                        context.launchUrl(launchStrategy.sourceUrl!!)
+                    }
                 }
-            }
-        ),
-        shape = if (total <= 1) RoundedCornerShape(large) else RoundedCornerShape(
-            topStart = if (index == 0) large else small,
-            topEnd = if (index == 0) large else small,
-            bottomStart = if (index == total - 1) large else small,
-            bottomEnd = if (index == total - 1) large else small
-        )
+            ),
+        shape = clip
     ) {
         Box(
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),

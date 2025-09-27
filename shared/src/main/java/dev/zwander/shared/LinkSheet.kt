@@ -33,7 +33,7 @@ class LinkSheet : BaseActivity() {
         val targetColor = BottomSheetDefaults.ScrimColor
 
         LaunchedEffect(Unit) {
-            delay(500) // wait 1 second
+            delay(200) // wait 1 second
             anim.animateTo(targetColor, animationSpec = tween(1000)) // fade over 1 second
         }
 

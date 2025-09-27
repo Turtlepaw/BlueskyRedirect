@@ -80,25 +80,19 @@ fun FooterLayout(
                 R.string.github,
                 R.drawable.github,
             ) {
-                context.openLinkNaturally("https://github.com/zacharee/MastodonRedirect/".toUri())
+                context.openLinkNaturally("https://github.com/Turtlepaw/BlueskyRedirect".toUri())
             },
             FooterButton(
                 R.string.patreon,
-                R.drawable.patreon,
+                R.drawable.tangled,
             ) {
-                context.openLinkNaturally("https://www.patreon.com/zacharywander".toUri())
+                context.openLinkNaturally("https://tangled.org/did:plc:u2grpouz5553mrn4x772pyfa/bluesky_redirect".toUri())
             },
             FooterButton(
                 R.string.bluesky,
                 R.drawable.bluesky,
             ) {
                 context.openLinkNaturally("https://bsky.app/profile/turtlepaw.on.computer".toUri())
-            },
-            FooterButton(
-                R.string.supporters,
-                R.drawable.heart,
-            ) {
-                showingSupportersDialog = true
             },
             FooterButton(
                 R.string.options,
@@ -202,28 +196,28 @@ private fun OptionsDialog(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                item {
-                    TextSwitch(
-                        text = stringResource(id = R.string.enable_crash_reports),
-                        subtitle = stringResource(id = R.string.enable_crash_reports_desc),
-                        checked = enableCrashReports,
-                        onCheckedChange = { enableCrashReports = it },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-
-                item {
-                    TextSwitch(
-                        text = stringResource(id = R.string.open_media_in_browser),
-                        subtitle = stringResource(
-                            id = R.string.open_media_in_browser_desc,
-                            appModel.appName
-                        ),
-                        checked = openMediaInBrowser,
-                        onCheckedChange = { openMediaInBrowser = it },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
+//                item {
+//                    TextSwitch(
+//                        text = stringResource(id = R.string.enable_crash_reports),
+//                        subtitle = stringResource(id = R.string.enable_crash_reports_desc),
+//                        checked = enableCrashReports,
+//                        onCheckedChange = { enableCrashReports = it },
+//                        modifier = Modifier.fillMaxWidth(),
+//                    )
+//                }
+//
+//                item {
+//                    TextSwitch(
+//                        text = stringResource(id = R.string.open_media_in_browser),
+//                        subtitle = stringResource(
+//                            id = R.string.open_media_in_browser_desc,
+//                            appModel.appName
+//                        ),
+//                        checked = openMediaInBrowser,
+//                        onCheckedChange = { openMediaInBrowser = it },
+//                        modifier = Modifier.fillMaxWidth(),
+//                    )
+//                }
 
                 item {
                     AnimatedCard(
