@@ -25,7 +25,9 @@ sealed interface LaunchIntentCreator {
                     appModel.launchStrategyUtils.createViewIntent(
                         pkg = pkg,
                         component = component,
-                        url = urlTransform(url),
+                        url = url.toUri().buildUpon().authority(
+                            "bsky.app"
+                        ).toString(),
                         scheme = scheme,
                     ),
                 )
