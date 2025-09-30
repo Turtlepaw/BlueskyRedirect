@@ -10,7 +10,7 @@ Automatically launch Bluesky (and other client) links in your preferred Bluesky 
 <img alt="List of supported clients" src="https://tangled.org/@turtlepaw.on.computer/bluesky_redirect/raw/main/app/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="400"> <img alt="@mary.my.id's tangled profile with an overlay with text: Open Bluesky Profile with" src="https://tangled.org/@turtlepaw.on.computer/bluesky_redirect/raw/main/app/fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="400">
 
 ## Downloads
-Fediverse Redirect has different variants depending on which social media network you want to use. Download the appropriate APK for your desired social network below.
+Bluesky Redirect lets you open Bluesky links in your preferred client. Download the latest APK below to get started.
 
 ### GitHub
 [![GitHub Release](https://img.shields.io/github/v/release/turtlepaw/BlueskyRedirect?color=74c7ec&labelColor=303446&style=for-the-badge&logo=github&label=Bluesky%20Redirect&logoColor=cdd6f4)](https://github.com/turtlepaw/BlueskyRedirect/releases)
@@ -104,8 +104,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
 The high level process is pretty simple: expose some way for your app to be launched that accepts a URL and tries to parse it as a bluesky link to open as a post or profile. There are a few ways you can do this.
 
 Once you've implemented support, feel free to open an issue or PR to have it added to Bluesky Redirect.
-
-#### Create a share target.
 
 #### Create a view target.
 This is similar to the share target, but won't show up to users directly in the share menu.
