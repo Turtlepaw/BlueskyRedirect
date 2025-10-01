@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.bugsnagAndroid)
+    //alias(libs.plugins.bugsnagAndroid)
     alias(libs.plugins.kotlin.compose)
 }
 
