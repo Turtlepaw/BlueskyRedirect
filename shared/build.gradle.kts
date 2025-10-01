@@ -92,7 +92,7 @@ dependencies {
     api(libs.linkSheet)
     api(libs.material.components)
     api(libs.hiddenApiBypass)
-    api(libs.bugsnag.android)
+    //api(libs.bugsnag.android)
     api(libs.mvvm.flow.compose)
 
     api(libs.apk.parser)

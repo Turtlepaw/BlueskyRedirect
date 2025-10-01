@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,7 +35,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.net.toUri
-import com.bugsnag.android.Bugsnag
 import dev.zwander.shared.LinkBlocklistActivity
 import dev.zwander.shared.R
 import dev.zwander.shared.model.LocalAppModel
@@ -180,11 +178,11 @@ private fun OptionsDialog(
     var enableCrashReports by prefs.enableCrashReports.rememberMutablePreferenceState()
     var openMediaInBrowser by prefs.openMediaInBrowser.rememberMutablePreferenceState()
 
-    LaunchedEffect(key1 = enableCrashReports) {
-        if (enableCrashReports) {
-            Bugsnag.start(context)
-        }
-    }
+//    LaunchedEffect(key1 = enableCrashReports) {
+//        if (enableCrashReports) {
+//            Bugsnag.start(context)
+//        }
+//    }
 
     AlertDialog(
         onDismissRequest = onDismissRequest,

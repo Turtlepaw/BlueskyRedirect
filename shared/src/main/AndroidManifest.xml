@@ -20,8 +20,8 @@
         android:name="${applicationId}.MainApp"
         android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:usesCleartextTraffic="true">
+        android:roundIcon="@mipmap/ic_launcher_round">
+        <!--        android:usesCleartextTraffic="true"-->
         <activity android:name=".BaseActivity"
             android:exported="true"
             android:launchMode="singleInstance" />
@@ -90,12 +90,12 @@
             android:multiprocess="false"
             android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
-        <meta-data
-            android:name="com.bugsnag.android.API_KEY"
-            android:value="4cef06309dfdf99215d11253bedf8dd9" />
+        <!--        <meta-data-->
+        <!--            android:name="com.bugsnag.android.API_KEY"-->
+        <!--            android:value="4cef06309dfdf99215d11253bedf8dd9" />-->
 
-        <meta-data
-            android:name="com.bugsnag.android.BUILD_UUID"
-            android:value="${build_uuid}" />
+        <!--        <meta-data-->
+        <!--            android:name="com.bugsnag.android.BUILD_UUID"-->
+        <!--            android:value="${build_uuid}" />-->
     </application>
 </manifest>

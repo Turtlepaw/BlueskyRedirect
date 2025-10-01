@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
 import androidx.annotation.StringRes
-import com.bugsnag.android.Bugsnag
 import dev.zwander.shared.model.AppModel
 import dev.zwander.shared.shizuku.ShizukuService
 import dev.zwander.shared.util.BaseLaunchStrategyUtils
@@ -79,9 +78,9 @@ abstract class App(
             HiddenApiBypass.addHiddenApiExemptions("")
         }
 
-        if (prefs.enableCrashReports.currentValue(this)) {
-            Bugsnag.start(this)
-        }
+//        if (prefs.enableCrashReports.currentValue(this)) {
+//            Bugsnag.start(this)
+//        }
 
         Shizuku.addBinderReceivedListenerSticky {
             if (Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED) {
