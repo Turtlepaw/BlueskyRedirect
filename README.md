@@ -7,7 +7,7 @@ Automatically launch Bluesky (and other client) links in your preferred Bluesky 
 
 ## Screenshots
 
-<img alt="List of supported clients" src="https://tangled.org/@turtlepaw.on.computer/bluesky_redirect/raw/main/app/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="400"> <img alt="@mary.my.id's tangled profile with an overlay with text: Open Bluesky Profile with" src="https://tangled.org/@turtlepaw.on.computer/bluesky_redirect/raw/main/app/fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="400">
+<img alt="List of supported clients" src="https://tangled.org/@turtlepaw.on.computer/bluesky_redirect/raw/main/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="400"> <img alt="@mary.my.id's tangled profile with an overlay with text: Open Bluesky Profile with" src="https://tangled.org/@turtlepaw.on.computer/bluesky_redirect/raw/main/fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="400">
 
 ## Downloads
 Bluesky Redirect lets you open Bluesky links in your preferred client. Download the latest APK below to get started.
