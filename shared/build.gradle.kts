@@ -88,7 +88,6 @@ dependencies {
     api(libs.shizuku.api)
     api(libs.shizuku.provider)
 
-    api(libs.patreonSupportersRetrieval)
     api(libs.linkSheet)
     api(libs.material.components)
     api(libs.hiddenApiBypass)
