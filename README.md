@@ -18,9 +18,7 @@ Bluesky Redirect lets you open Bluesky links in your preferred client. Download 
 [![Obtainium](https://img.shields.io/badge/obtainium-blue?color=74c7ec&labelColor=303446&style=for-the-badge&logo=obtainium&logoColor=cdd6f4)](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/turtlepaw/BlueskyRedirect/releases)
 
 ### IzzyOnDroid
-<!-- [![Mastodon Redirect](https://img.shields.io/endpoint?url=https%3A%2F%2Fapt.izzysoft.de%2Ffdroid%2Fapi%2Fv1%2Fshield%2Fdev.zwander.mastodonredirect&style=for-the-badge&logo=f-droid&label=Mastodon%20Redirect)](https://apt.izzysoft.de/fdroid/index/apk/dev.zwander.mastodonredirect/) -->
-
-soon
+<a href="https://apt.izzysoft.de/packages/io.github.turtlepaw.blueskyredirect"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" width="170"></a>
 
 ## Supported Domains
 
