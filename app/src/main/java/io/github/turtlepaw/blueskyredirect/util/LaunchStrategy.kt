@@ -76,7 +76,7 @@ data object Fread : BlueskyClientLaunchStrategy(
     "https://github.com/0xZhangKe/Fread",
     LaunchIntentCreator.ComponentIntentCreator.ViewIntentCreator(
         pkg = "com.zhangke.fread",
-        component = "com.zhangke.fread.MainActivity",
+        component = "com.zhangke.fread.FreadActivity",
     ),
 )
 
