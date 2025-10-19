@@ -70,6 +70,17 @@ data object DeerAyla : BlueskyClientLaunchStrategy(
 )
 
 @Keep
+data object Fread : BlueskyClientLaunchStrategy(
+    "FREAD_ANDROID",
+    R.string.fread,
+    "https://github.com/0xZhangKe/Fread",
+    LaunchIntentCreator.ComponentIntentCreator.ViewIntentCreator(
+        pkg = "com.zhangke.fread",
+        component = "com.zhangke.fread.FreadActivity",
+    ),
+)
+
+@Keep
 data object AskEveryTime : BlueskyClientLaunchStrategy(
     "ASK_EVERY_TIME",
     dev.zwander.shared.R.string.ask_every_time,
