@@ -44,7 +44,6 @@ import dev.zwander.shared.util.openLinkNaturally
 import dev.zwander.shared.util.rememberMutablePreferenceState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import tk.zwander.patreonsupportersretrieval.view.SupporterView
 
 private data class FooterButton(
     @StringRes val labelRes: Int,
@@ -63,9 +62,6 @@ fun FooterLayout(
     val context = LocalContext.current
 
     var showingSettingsDialog by remember {
-        mutableStateOf(false)
-    }
-    var showingSupportersDialog by remember {
         mutableStateOf(false)
     }
     var showingShizukuResetDialog by remember {
@@ -131,40 +127,11 @@ fun FooterLayout(
         }
     }
 
-    if (showingSupportersDialog) {
-        SupportersDialog {
-            showingSupportersDialog = false
-        }
-    }
-
     if (showingShizukuResetDialog) {
         ShizukuResetDialog {
             showingShizukuResetDialog = false
         }
     }
-}
-
-@Composable
-private fun SupportersDialog(
-    onDismissRequest: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        title = {
-            Text(text = stringResource(id = R.string.supporters))
-        },
-        text = {
-            AndroidView(
-                factory = { SupporterView(it) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        },
-        confirmButton = {
-            TextButton(onClick = onDismissRequest) {
-                Text(text = stringResource(id = android.R.string.ok))
-            }
-        },
-    )
 }
 
 @Composable
