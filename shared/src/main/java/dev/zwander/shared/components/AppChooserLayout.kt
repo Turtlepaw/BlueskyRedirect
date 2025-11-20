@@ -55,8 +55,8 @@ import dev.zwander.shared.LaunchStrategy
 import dev.zwander.shared.LaunchStrategyRootGroup
 import dev.zwander.shared.R
 import dev.zwander.shared.model.LocalAppModel
+import dev.zwander.shared.util.launchUrl
 import dev.zwander.shared.util.rememberMutablePreferenceState
-import tk.zwander.patreonsupportersretrieval.util.launchUrl
 
 enum class AppChooserView {
     Default,
