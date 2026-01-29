@@ -32,6 +32,8 @@
                 <data android:host="deer-social-ayla.pages.dev" />
                 <data android:host="social.daniela.lol" />
                 <data android:host="deer.aylac.top" />
+                <data android:host="blacksky.community" />
+                <data android:host="witchsky.app" />
             </intent-filter>
         </activity>
     </application>
