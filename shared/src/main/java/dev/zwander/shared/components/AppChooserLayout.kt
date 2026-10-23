@@ -171,18 +171,18 @@ private fun GroupCard(
         leadingContent = {
             if (appChooserView == AppChooserView.Minimal) {
                 val packageManager = context.packageManager
-                val icon =
-                    if (launchStrategy.intentCreator is LaunchIntentCreator.ComponentIntentCreator.ViewIntentCreator) {
-                        try {
-                            packageManager.getApplicationIcon(
-                                launchStrategy.intentCreator.pkg
-                            )
-                        } catch (e: PackageManager.NameNotFoundException) {
-                            null
-                        }
-                    } else {
-                        null
-                    }
+                val pkg = when (val strategy = launchStrategy.intentCreator) {
+                    is LaunchIntentCreator.ComponentIntentCreator.ViewIntentCreator -> strategy.pkg
+                    is LaunchIntentCreator.DiscoveredIntentCreator -> strategy.components.first().packageName
+                    else -> null
+                }
+                val icon = if (pkg == null) null else try {
+                    packageManager.getApplicationIcon(
+                        pkg
+                    )
+                } catch (e: PackageManager.NameNotFoundException) {
+                    null
+                }
 
                 if (icon != null) {
                     Image(
