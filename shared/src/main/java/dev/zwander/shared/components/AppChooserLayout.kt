@@ -101,7 +101,7 @@ fun AppChooserLayout(
             columns = AdaptiveMod(minSize = 300.dp, itemCount = launchStrategies.size),
         ) {
             itemsIndexed(
-                items, { index, it -> it.labelRes },
+                items, { index, it -> it.key },
             ) { index, strategy ->
                 GroupCard(
                     launchStrategy = strategy,

@@ -51,34 +51,12 @@ If you're the developer of a Bluesky client and want to add support for Bluesky 
 
 ### Automatic
 
-wip
-<!-- You can let Bluesky Redirect automatically discover your app by filtering for a custom Intent and parsing the data as a URL.
-
 #### Create a discoverable target.
 In your `AndroidManifest.xml`, add the following intent filter inside the relevant Activity tag:
 
-Mastodon Redirect:
 ```xml
 <intent-filter>
-    <action android:name="dev.zwander.mastodonredirect.intent.action.OPEN_FEDI_LINK" />
-    
-    <category android:name="android.intent.category.DEFAULT" />
-</intent-filter>
-```
-
-Lemmy Redirect:
-```xml
-<intent-filter>
-    <action android:name="dev.zwander.lemmyredirect.intent.action.OPEN_FEDI_LINK" />
-    
-    <category android:name="android.intent.category.DEFAULT" />
-</intent-filter>
-```
-
-PeerTube Redirect:
-```xml
-<intent-filter>
-    <action android:name="dev.zwander.peertuberedirect.intent.action.OPEN_FEDI_LINK" />
+    <action android:name="io.github.turtlepaw.blueskyredirect.intent.action.OPEN_BSKY_LINK" />
     
     <category android:name="android.intent.category.DEFAULT" />
 </intent-filter>
@@ -96,7 +74,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     // Pass it to your internal link parser to find the post ID and such.
     // Open in your thread/profile viewer component.
 }
-``` -->
+```
 
 ### Manual
 The high level process is pretty simple: expose some way for your app to be launched that accepts a URL and tries to parse it as a bluesky link to open as a post or profile. There are a few ways you can do this.
