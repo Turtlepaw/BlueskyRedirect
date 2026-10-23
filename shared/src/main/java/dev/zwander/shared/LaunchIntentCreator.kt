@@ -99,7 +99,7 @@ sealed interface LaunchIntentCreator {
                 Intent(launchAction).apply {
                     addCategory(Intent.CATEGORY_DEFAULT)
 
-                    `package` = packageName
+                    `package` = cmp.packageName
                     component = cmp
                     data = url.toUri()
                 }

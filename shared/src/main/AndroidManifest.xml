@@ -6,7 +6,7 @@
         <package android:name="moe.shizuku.privileged.api" />
 
         <intent>
-            <action android:name="${applicationId}.intent.action.OPEN_BSKY" />
+            <action android:name="${applicationId}.intent.action.OPEN_BSKY_LINK" />
         </intent>
     </queries>
 
