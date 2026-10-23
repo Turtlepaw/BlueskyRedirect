@@ -67,6 +67,7 @@
 
     <string name="choose_app">Choose App</string>
     <string name="choose_app_desc">Select your preferred client to open Bluesky links with.</string>
+    <string name="info">Info</string>
 
     <string name="options">Options</string>
     <string name="patreon">Patreon</string>
@@ -83,7 +84,7 @@
     <string name="opening_link">Opening link…</string>
 
     <string name="link_blocklist">Link Blocklist</string>
-    <string name="link_blocklist_desc">Choose domains that %s should ignore and redirect to your browser.</string>
+    <string name="link_blocklist_desc">Choose domains that %s should ignore and redirect to your default app.</string>
 
     <string name="yes">Yes</string>
     <string name="no">No</string>

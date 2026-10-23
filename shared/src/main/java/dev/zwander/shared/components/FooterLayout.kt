@@ -5,19 +5,19 @@ import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -27,13 +27,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.net.toUri
 import dev.zwander.shared.LinkBlocklistActivity
 import dev.zwander.shared.R
@@ -86,14 +84,11 @@ fun FooterLayout(
                 R.string.bluesky,
                 R.drawable.bluesky,
             ) {
-                context.openLinkNaturally("https://bsky.app/profile/turtlepaw.on.computer".toUri())
+                context.openLinkNaturally("https://bsky.app/profile/did:web:kittens.fyi".toUri())
             },
             FooterButton(
                 R.string.options,
                 R.drawable.baseline_settings_24,
-                onLongClick = {
-                    showingShizukuResetDialog = true
-                },
             ) {
                 showingSettingsDialog = true
             },
@@ -108,9 +103,8 @@ fun FooterLayout(
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             buttons.forEach { button ->
-                LongClickableIconButton(
+                IconButton(
                     onClick = button.onClick,
-                    onLongClick = button.onLongClick,
                 ) {
                     Icon(
                         painter = painterResource(id = button.iconRes),
@@ -122,9 +116,14 @@ fun FooterLayout(
     }
 
     if (showingSettingsDialog) {
-        OptionsDialog {
-            showingSettingsDialog = false
-        }
+        OptionsDialog(
+            onResetRequest = {
+                showingShizukuResetDialog = true
+            },
+            onDismissRequest = {
+                showingSettingsDialog = false
+            }
+        )
     }
 
     if (showingShizukuResetDialog) {
@@ -136,6 +135,7 @@ fun FooterLayout(
 
 @Composable
 private fun OptionsDialog(
+    onResetRequest: () -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -159,7 +159,7 @@ private fun OptionsDialog(
         text = {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(ListItemDefaults.SegmentedGap),
             ) {
 //                item {
 //                    TextSwitch(
@@ -184,34 +184,38 @@ private fun OptionsDialog(
 //                    )
 //                }
 
+                val items = 2
                 item {
-                    AnimatedCard(
+                    SegmentedListItem(
+                        shapes = ListItemDefaults.segmentedShapes(index = 0, count = items),
+                        supportingContent = {
+                            Text(
+                                text = stringResource(
+                                    id = R.string.link_blocklist_desc,
+                                    appModel.appName
+                                ),
+                                style = MaterialTheme.typography.bodySmall,
+                            )
+                        },
                         onClick = {
                             context.startActivity(Intent(context, LinkBlocklistActivity::class.java))
-                        },
-                        colors = CardDefaults.outlinedCardColors(),
-                        border = null,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp, vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Column(
-                                modifier = Modifier.weight(1f),
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.link_blocklist),
-                                )
-
-                                Text(
-                                    text = stringResource(id = R.string.link_blocklist_desc, appModel.appName),
-                                    style = MaterialTheme.typography.bodySmall,
-                                )
-                            }
                         }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.link_blocklist),
+                        )
+                    }
+                }
+                item {
+                    SegmentedListItem(
+                        shapes = ListItemDefaults.segmentedShapes(index = 1, count = items),
+                        onClick = {
+                            onResetRequest()
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.reset_link_verification),
+                        )
                     }
                 }
             }

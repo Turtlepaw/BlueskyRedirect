@@ -3,35 +3,30 @@ package dev.zwander.shared.components
 import android.content.pm.PackageManager
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
@@ -41,7 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
@@ -103,7 +97,7 @@ fun AppChooserLayout(
             modifier = Modifier,
             contentPadding = PaddingValues(14.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalItemSpacing = 3.dp,
+            verticalItemSpacing = ListItemDefaults.SegmentedGap,
             columns = AdaptiveMod(minSize = 300.dp, itemCount = launchStrategies.size),
         ) {
             itemsIndexed(
@@ -121,18 +115,19 @@ fun AppChooserLayout(
             }
         }
 
-        if (appChooserView == AppChooserView.Default) Row(
+        if (appChooserView == AppChooserView.Default) Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     horizontal = 24.dp,
                 ),
-            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+//            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+//            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                Icons.Rounded.Info,
-                contentDescription = null,
+                painterResource(R.drawable.info_24px),
+                contentDescription = stringResource(R.string.info),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
@@ -160,107 +155,78 @@ private fun GroupCard(
     val small = MaterialTheme.shapes.small.topStart
     val isInstalled = launchStrategy.rememberIsInstalled()
     val context = LocalContext.current
-
-    val clip = if (total <= 1) RoundedCornerShape(large) else RoundedCornerShape(
-        topStart = if (index == 0) large else small,
-        topEnd = if (index == 0) large else small,
-        bottomStart = if (index == total - 1) large else small,
-        bottomEnd = if (index == total - 1) large else small
-    )
-    Card(
-        modifier = modifier
-            .clip(clip)
-            .clickable(
-                onClick = {
-                    if (isInstalled) {
-                        onStrategySelected(launchStrategy)
-                    } else if (launchStrategy.sourceUrl != null) {
-                        context.launchUrl(launchStrategy.sourceUrl!!)
-                    }
-                }
-            ),
-        shape = clip
-    ) {
-        Box(
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth().run {
-                    return@run if (appChooserView == AppChooserView.Minimal) {
-                        padding(vertical = 6.dp, horizontal = 2.dp)
-                    } else this
-                }
-            ) {
-                if (appChooserView == AppChooserView.Default) {
-                    RadioButton(
-                        selected = isSelected,
-                        onClick = { onStrategySelected(launchStrategy) },
-                        enabled = isInstalled,
-                        modifier = Modifier.align(Alignment.CenterVertically),
-                    )
-                }
-
-
-                if (appChooserView == AppChooserView.Minimal) {
-                    val packageManager = context.packageManager
-                    val icon =
-                        if (launchStrategy.intentCreator is LaunchIntentCreator.ComponentIntentCreator.ViewIntentCreator) {
-                            try {
-                                packageManager.getApplicationIcon(
-                                    launchStrategy.intentCreator.pkg
-                                )
-                            } catch (e: PackageManager.NameNotFoundException) {
-                                null
-                            }
-                        } else {
+    SegmentedListItem(
+        onClick = {
+            if (isInstalled) {
+                onStrategySelected(launchStrategy)
+            } else if (launchStrategy.sourceUrl != null) {
+                context.launchUrl(launchStrategy.sourceUrl!!)
+            }
+        },
+        colors = ListItemDefaults.segmentedColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+        shapes = ListItemDefaults.segmentedShapes(index = index, count = total),
+        contentPadding = if (appChooserView == AppChooserView.Minimal) PaddingValues(14.dp) else PaddingValues(
+            if (!isInstalled) 14.dp else 18.dp
+        ),
+        leadingContent = {
+            if (appChooserView == AppChooserView.Minimal) {
+                val packageManager = context.packageManager
+                val icon =
+                    if (launchStrategy.intentCreator is LaunchIntentCreator.ComponentIntentCreator.ViewIntentCreator) {
+                        try {
+                            packageManager.getApplicationIcon(
+                                launchStrategy.intentCreator.pkg
+                            )
+                        } catch (e: PackageManager.NameNotFoundException) {
                             null
                         }
-
-                    if (icon != null) {
-                        Image(
-                            painter = BitmapPainter(icon.toBitmap().asImageBitmap()),
-                            contentDescription = null,
-                            modifier = Modifier.size(30.dp)
-                        )
+                    } else {
+                        null
                     }
-                }
 
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .padding(vertical = 2.dp)
-                ) {
-                    GroupTitle(strategy = launchStrategy)
-
-                    if (!isInstalled) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.baseline_file_download_24),
-                                contentDescription = stringResource(id = R.string.download),
-                                modifier = Modifier.size(20.dp),
-                            )
-
-                            Text("Not installed")
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.weight(1f)) // pushes the icon to the far right
-
-                if (!isInstalled) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.open_in_new),
-                        contentDescription = stringResource(id = R.string.download),
-                        modifier = Modifier.size(20.dp),
+                if (icon != null) {
+                    Image(
+                        painter = BitmapPainter(icon.toBitmap().asImageBitmap()),
+                        contentDescription = null,
+                        modifier = Modifier.size(30.dp)
                     )
                 }
+            } else {
+                RadioButton(
+                    selected = isSelected,
+                    onClick = { onStrategySelected(launchStrategy) },
+                    enabled = isInstalled,
+                )
             }
-        }
+        },
+        trailingContent = if (!isInstalled) {
+            {
+                Icon(
+                    painter = painterResource(id = R.drawable.open_in_new),
+                    contentDescription = stringResource(id = R.string.download),
+                    modifier = Modifier.size(20.dp),
+                )
+            }
+        } else null,
+        supportingContent =
+            if (!isInstalled) {
+                {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_file_download_24),
+                            contentDescription = stringResource(id = R.string.download),
+                            modifier = Modifier.size(20.dp),
+                        )
+
+                        Text("Not installed")
+                    }
+                }
+            } else null
+    ) {
+        GroupTitle(strategy = launchStrategy)
     }
 }
 
