@@ -9,11 +9,13 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 val LocalAppModel = compositionLocalOf<AppModel> { throw IllegalStateException("No app model provided!") }
+typealias ResolveUrl = (url: String) -> String?
 
 interface AppModel {
     val launchStrategyUtils: BaseLaunchStrategyUtils
     val defaultLaunchStrategy: LaunchStrategy
     val fetchActivity: Class<*>
+    val resolveUrl: ResolveUrl
 
     val appName: String
 

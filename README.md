@@ -22,12 +22,22 @@ Bluesky Redirect lets you open Bluesky links in your preferred client. Download 
 
 ## Supported Domains
 
-- bsky.app
-- main.bsky.app
-- deer.social
-- deer-social-ayla.pages.dev
-- catsky.social
-- social.daniela.lol
+- [bsky.app](https://bsky.app)
+- [main.bsky.app](https://main.bsky.app)
+- [Catsky](https://catsky.social)
+- [Deer.social](https://deer.social)
+- [Deer Social Ayla](https://deer-social-ayla.pages.dev)
+- [Deer Aylac](https://deer.aylac.top)
+- [social.daniela.lol](https://social.daniela.lol)
+- [Blacksky](https://blacksky.community)
+- [Witchsky](https://witchsky.app)
+- [impro.social](https://impro.social)
+- [Red Dwarf](https://reddwarf.app)
+- [bluepy.social](https://bluepy.social)
+- [Anisota](https://anisota.net)
+- [mu.social](https://mu.social)
+- [Northsky](https://northsky.app)
+- [aturi.to](https://aturi.to)
 
 ## Setup
 If any domains aren't enabled for handling, the app will let you know and provide you buttons for enabling them.

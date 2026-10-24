@@ -51,6 +51,7 @@ import dev.zwander.shared.LaunchStrategy
 import dev.zwander.shared.R
 import dev.zwander.shared.model.AppModel
 import dev.zwander.shared.model.LocalAppModel
+import dev.zwander.shared.model.ResolveUrl
 import dev.zwander.shared.util.BaseLaunchStrategyUtils
 import dev.zwander.shared.util.Expander
 import dev.zwander.shared.util.LinkSheetStatus
@@ -84,6 +85,8 @@ fun LinkVerifyPreview() {
                     override val appName: String
                         get() = "Test Redirect"
                     override val prefs: Prefs
+                        get() = error("Not implemented")
+                    override val resolveUrl: ResolveUrl
                         get() = error("Not implemented")
 
                     override fun postShizukuCommand(

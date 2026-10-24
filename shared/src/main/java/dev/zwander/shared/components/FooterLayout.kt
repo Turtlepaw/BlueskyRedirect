@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -18,6 +20,7 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedListItem
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -144,6 +147,9 @@ private fun OptionsDialog(
 
     var enableCrashReports by prefs.enableCrashReports.rememberMutablePreferenceState()
     var openMediaInBrowser by prefs.openMediaInBrowser.rememberMutablePreferenceState()
+    var showingEnabledClientsDialog by remember {
+        mutableStateOf(false)
+    }
 
 //    LaunchedEffect(key1 = enableCrashReports) {
 //        if (enableCrashReports) {
@@ -184,10 +190,30 @@ private fun OptionsDialog(
 //                    )
 //                }
 
-                val items = 2
+                val items = 3
                 item {
                     SegmentedListItem(
                         shapes = ListItemDefaults.segmentedShapes(index = 0, count = items),
+                        supportingContent = {
+                            Text(
+                                text = stringResource(
+                                    id = R.string.enabled_clients_desc,
+                                ),
+                                style = MaterialTheme.typography.bodySmall,
+                            )
+                        },
+                        onClick = {
+                            showingEnabledClientsDialog = true
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.enabled_clients),
+                        )
+                    }
+                }
+                item {
+                    SegmentedListItem(
+                        shapes = ListItemDefaults.segmentedShapes(index = 1, count = items),
                         supportingContent = {
                             Text(
                                 text = stringResource(
@@ -208,7 +234,7 @@ private fun OptionsDialog(
                 }
                 item {
                     SegmentedListItem(
-                        shapes = ListItemDefaults.segmentedShapes(index = 1, count = items),
+                        shapes = ListItemDefaults.segmentedShapes(index = 2, count = items),
                         onClick = {
                             onResetRequest()
                         }
@@ -217,6 +243,83 @@ private fun OptionsDialog(
                             text = stringResource(id = R.string.reset_link_verification),
                         )
                     }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text(text = stringResource(id = android.R.string.ok))
+            }
+        },
+    )
+
+    if (showingEnabledClientsDialog) {
+        EnabledClientsDialog {
+            showingEnabledClientsDialog = false
+        }
+    }
+}
+
+@Composable
+private fun EnabledClientsDialog(
+    onDismissRequest: () -> Unit,
+) {
+    val context = LocalContext.current
+    val appModel = LocalAppModel.current
+    val prefs = appModel.prefs
+
+    var disabledStrategies by prefs.disabledLaunchStrategies.rememberMutablePreferenceState()
+    val allStrategies = remember {
+        appModel.launchStrategyUtils.getAllLaunchStrategies(context)
+            .filter { it.key != "ASK_EVERY_TIME" }
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = {
+            Text(text = stringResource(id = R.string.enabled_clients))
+        },
+        text = {
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(ListItemDefaults.SegmentedGap),
+            ) {
+                itemsIndexed(
+                    allStrategies,
+                    key = { _, strategy -> strategy.key }) { index, strategy ->
+                    val isEnabled = !disabledStrategies.contains(strategy.key)
+                    val interactionSource = remember { MutableInteractionSource() }
+
+                    SegmentedListItem(
+                        shapes = ListItemDefaults.segmentedShapes(
+                            index = index,
+                            count = allStrategies.size
+                        ),
+                        interactionSource = interactionSource,
+                        content = {
+                            Text(text = with(strategy) { context.label })
+                        },
+                        trailingContent = {
+                            Switch(
+                                checked = isEnabled,
+                                onCheckedChange = { checked ->
+                                    disabledStrategies = if (checked) {
+                                        disabledStrategies - strategy.key
+                                    } else {
+                                        disabledStrategies + strategy.key
+                                    }
+                                },
+                                interactionSource = interactionSource,
+                            )
+                        },
+                        onClick = {
+                            disabledStrategies = if (isEnabled) {
+                                disabledStrategies + strategy.key
+                            } else {
+                                disabledStrategies - strategy.key
+                            }
+                        },
+                    )
                 }
             }
         },

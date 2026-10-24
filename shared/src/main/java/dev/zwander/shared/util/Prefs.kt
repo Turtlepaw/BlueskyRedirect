@@ -33,6 +33,7 @@ class Prefs private constructor(
         val OPEN_MEDIA_IN_BROWSER = booleanPreferencesKey("open_media_in_browser")
         val LAST_HANDLED_LINK = stringPreferencesKey("last_handled_link")
         val BLOCKLISTED_DOMAINS = stringSetPreferencesKey("blocklisted_domains")
+        val DISABLED_LAUNCH_STRATEGIES = stringSetPreferencesKey("disabled_launch_strategies")
     }
 
     val dataStore by preferencesDataStore(
@@ -79,6 +80,12 @@ class Prefs private constructor(
     val blocklistedDomains = SimplePreferenceItem(
         dataStore = dataStore,
         key = BLOCKLISTED_DOMAINS,
+        default = setOf(),
+    )
+
+    val disabledLaunchStrategies = SimplePreferenceItem(
+        dataStore = dataStore,
+        key = DISABLED_LAUNCH_STRATEGIES,
         default = setOf(),
     )
 }

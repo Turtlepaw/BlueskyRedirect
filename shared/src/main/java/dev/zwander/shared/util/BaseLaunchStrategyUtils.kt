@@ -19,9 +19,26 @@ abstract class BaseLaunchStrategyUtils(
 ) {
     protected open val launchAction = "$applicationId.intent.action.OPEN_BSKY_LINK"
 
-    protected open val launchStrategies by lazy {
+    open val launchStrategies by lazy {
         baseGroupClass.sealedSubclasses
             .mapNotNull { it.objectInstance }
+    }
+
+    open fun getAllLaunchStrategies(context: Context): List<LaunchStrategy> {
+        val sortedPredefined = launchStrategies.sortedBy {
+            with(it) { context.label }.lowercase()
+        }
+
+        val discoveredValues = context.discoverStrategies().values
+
+        return if (discoveredValues.isEmpty()) {
+            sortedPredefined
+        } else {
+            sortedPredefined +
+                    discoveredValues.sortedBy {
+                        with(it) { context.label }.lowercase()
+                    }
+        }
     }
 
     @Composable
@@ -29,20 +46,7 @@ abstract class BaseLaunchStrategyUtils(
         val context = LocalContext.current
 
         return remember {
-            val sortedPredefined = launchStrategies.sortedBy {
-                with(it) { context.label }.lowercase()
-            }
-
-            val discoveredValues = context.discoverStrategies().values
-
-            if (discoveredValues.isEmpty()) {
-                sortedPredefined
-            } else {
-                sortedPredefined +
-                    discoveredValues.sortedBy {
-                        with(it) { context.label }.lowercase()
-                    }
-            }
+            getAllLaunchStrategies(context)
         }
     }
 

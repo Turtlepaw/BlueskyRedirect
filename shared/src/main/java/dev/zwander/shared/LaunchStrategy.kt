@@ -30,6 +30,7 @@ abstract class BaseLaunchStrategy(
 abstract class LaunchStrategy(
     val key: String,
     @StringRes labelRes: Int,
+    val iconRes: Int? = null,
     val sequentialLaunch: Boolean = true,
     val intentCreator: LaunchIntentCreator,
 ) : BaseLaunchStrategy(labelRes) {

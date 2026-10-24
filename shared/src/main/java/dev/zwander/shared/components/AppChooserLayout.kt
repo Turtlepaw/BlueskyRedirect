@@ -66,8 +66,11 @@ fun AppChooserLayout(
 ) {
     val appModel = LocalAppModel.current
     val prefs = appModel.prefs
+    val disabledStrategies by prefs.disabledLaunchStrategies.rememberMutablePreferenceState()
     val launchStrategies = appModel.launchStrategyUtils.rememberSortedLaunchStrategies().filter {
-        if (appChooserView == AppChooserView.Minimal) {
+        if (disabledStrategies.contains(it.key)) {
+            false
+        } else if (appChooserView == AppChooserView.Minimal) {
             it.key != "ASK_EVERY_TIME"
         } else {
             true
@@ -83,7 +86,7 @@ fun AppChooserLayout(
     ) {
         val items = launchStrategies.filter {
             with(it) {
-                if (showNotInstalled) true else context.isInstalled()
+                showNotInstalled || it.intentCreator !is LaunchIntentCreator.ComponentIntentCreator.ViewIntentCreator || context.isInstalled()
             }
         }.sortedWith(
             compareByDescending<LaunchStrategy> {
@@ -153,7 +156,8 @@ private fun GroupCard(
 ) {
     val large = MaterialTheme.shapes.large.topStart
     val small = MaterialTheme.shapes.small.topStart
-    val isInstalled = launchStrategy.rememberIsInstalled()
+    val isInstalled =
+        launchStrategy.intentCreator !is LaunchIntentCreator.ComponentIntentCreator.ViewIntentCreator || launchStrategy.rememberIsInstalled()
     val context = LocalContext.current
     SegmentedListItem(
         onClick = {
@@ -176,17 +180,22 @@ private fun GroupCard(
                     is LaunchIntentCreator.DiscoveredIntentCreator -> strategy.components.first().packageName
                     else -> null
                 }
-                val icon = if (pkg == null) null else try {
-                    packageManager.getApplicationIcon(
+                val icon = if (launchStrategy.iconRes != null) {
+                    painterResource(id = launchStrategy.iconRes)
+                } else if (pkg == null) {
+                    null
+                } else try {
+                    val icon = packageManager.getApplicationIcon(
                         pkg
                     )
+                    BitmapPainter(icon.toBitmap().asImageBitmap())
                 } catch (e: PackageManager.NameNotFoundException) {
                     null
                 }
 
                 if (icon != null) {
                     Image(
-                        painter = BitmapPainter(icon.toBitmap().asImageBitmap()),
+                        painter = icon,
                         contentDescription = null,
                         modifier = Modifier.size(30.dp)
                     )

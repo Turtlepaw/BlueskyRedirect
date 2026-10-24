@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.annotation.StringRes
 import dev.zwander.shared.model.AppModel
+import dev.zwander.shared.model.ResolveUrl
 import dev.zwander.shared.shizuku.ShizukuService
 import dev.zwander.shared.util.BaseLaunchStrategyUtils
 import dev.zwander.shared.util.Prefs
@@ -29,6 +30,7 @@ abstract class App(
     override val launchStrategyUtils: BaseLaunchStrategyUtils,
     override val fetchActivity: Class<*>,
     override val defaultLaunchStrategy: LaunchStrategy,
+    override val resolveUrl: ResolveUrl,
     @StringRes private val appNameRes: Int,
 ) : Application(), AppModel, CoroutineScope by MainScope() {
     override val appName by lazy {

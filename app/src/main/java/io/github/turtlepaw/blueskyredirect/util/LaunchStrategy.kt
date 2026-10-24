@@ -23,7 +23,8 @@ sealed class BlueskyClientLaunchStrategy(
     @StringRes labelRes: Int,
     override val sourceUrl: String?,
     intentCreator: LaunchIntentCreator,
-) : LaunchStrategy(key, labelRes, intentCreator = intentCreator)
+    iconRes: Int? = null,
+) : LaunchStrategy(key, labelRes, iconRes, intentCreator = intentCreator)
 
 @Keep
 data object BlueskySocialApp : BlueskyClientLaunchStrategy(
@@ -78,6 +79,17 @@ data object Witchsky : BlueskyClientLaunchStrategy(
         pkg = "app.witchsky",
         component = "app.witchsky.MainActivity",
     ),
+)
+
+@Keep
+data object Pdsls : BlueskyClientLaunchStrategy(
+    "PDSLS",
+    R.string.pdsls,
+    "https://pds.ls",
+    LaunchIntentCreator.BaseUrlIntentCreator(
+        baseUrl = "pds.ls",
+    ),
+    R.drawable.pdsls
 )
 
 @Keep

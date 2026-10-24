@@ -25,6 +25,11 @@
     <string name="type_feed">Feed</string>
     <string name="type_profile">Profile</string>
 
+    <string name="no_url_provided">No URL provided</string>
+    <string name="failed_to_resolve_with_type">Failed to resolve %1$s</string>
+    <string name="failed_to_resolve">Failed to resolve link</string>
+    <string name="open_in_browser">Open in browser</string>
+
     <string name="open_with_type">Open Bluesky %1$s with</string>
     <string name="open_with">Open with</string>
 
@@ -86,6 +91,10 @@
     <string name="link_blocklist">Link Blocklist</string>
     <string name="link_blocklist_desc">Choose domains that %s should ignore and redirect to your default app.</string>
 
+    <string name="enabled_clients">Enabled Clients</string>
+    <string name="enabled_clients_desc">Choose which clients appear in the link sheet.</string>
+
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="error">Error</string>
 </resources>

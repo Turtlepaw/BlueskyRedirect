@@ -34,6 +34,15 @@
                 <data android:host="deer.aylac.top" />
                 <data android:host="blacksky.community" />
                 <data android:host="witchsky.app" />
+                <data android:host="impro.social" />
+                <data android:host="reddwarf.app" />
+                <data android:host="bluepy.social" />
+                <data android:host="anisota.net" />
+                <data android:host="mu.social" />
+                <data android:host="blacksky.community" />
+                <data android:host="northsky.app" />
+
+                <data android:host="aturi.to" />
             </intent-filter>
         </activity>
     </application>
