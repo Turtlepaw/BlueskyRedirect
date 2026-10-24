@@ -1,0 +1,3 @@
+- Add support for multiple new clients
+- Migrate to Material 3 Expressive
+- Properly support client auto-discovery

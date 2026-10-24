@@ -1,16 +1,14 @@
 # Bluesky Redirect
-Automatically launch Bluesky (and other client) links in your preferred Bluesky client.
 
-## Features
+Redirect Bluesky links and other client's links in your preferred Bluesky client.
 
-- Multi-client support, e.g. deer.social links will open in Catsky
+This app is heavily based on the work of [zacharee](https://github.com/zacharee)'s [Mastodon Redirect](https://github.com/zacharee/MastodonRedirect). The original license is included in the repository, and the code has been modified to work with Bluesky links and clients.
 
 ## Screenshots
 
-<img alt="List of supported clients" src="https://tangled.org/@turtlepaw.on.computer/bluesky_redirect/raw/main/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="400"> <img alt="@mary.my.id's tangled profile with an overlay with text: Open Bluesky Profile with" src="https://tangled.org/@turtlepaw.on.computer/bluesky_redirect/raw/main/fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="400">
+<img alt="List of supported clients" src="./fastlane/metadata/android/en-US/images/phoneScreenshots/01.JPEG" width="400"> <img alt="@mary.my.id's tangled profile with an overlay with text: Open Bluesky Profile with" src="./fastlane/metadata/android/en-US/images/phoneScreenshots/02.JPEG" width="400">
 
 ## Downloads
-Bluesky Redirect lets you open Bluesky links in your preferred client. Download the latest APK below to get started.
 
 ### GitHub
 [![GitHub Release](https://img.shields.io/github/v/release/turtlepaw/BlueskyRedirect?color=74c7ec&labelColor=303446&style=for-the-badge&logo=github&label=Bluesky%20Redirect&logoColor=cdd6f4)](https://github.com/turtlepaw/BlueskyRedirect/releases)
@@ -50,14 +48,16 @@ Alternatively, you can use [LinkSheet](https://github.com/1fexd/LinkSheet) to ha
 Open the Bluesky Redirect and select your preferred client. Bluesky Redirect currently supports the following clients:
 
 - [Bluesky](https://github.com/bluesky-social/social-app/)
-- [Catsky](https://github.com/NekoDrone/catsky-social/).
-- [Deer.social](https://github.com/a-viv-a/deer-social).
-- [Deer Social Ayla](https://github.com/ayla6/deer-social-test).
+- [Catsky](https://github.com/NekoDrone/catsky-social/)
+- [Deer.social](https://github.com/a-viv-a/deer-social)
+- [Deer Social Ayla](https://github.com/ayla6/deer-social-test)
+- [Witchsky](https://witchsky.app)
+- [PDSls](https://pds.ls)
 
 If your favorite client isn't on the list, consider creating an issue, ***but please search through the existing issues first, including ones that have been closed***. Pestering developers won't help anyone.
 
 ## Adding Client Support
-If you're the developer of a Bluesky client and want to add support for Bluesky Redirect into your app, here's how.
+If you're the developer of a Bluesky client and want to add support for Bluesky Redirect into your app, you can do so in a way that **doesn't require any changes to Bluesky Redirect** itself. This is done by creating a discoverable target or a manual target.
 
 ### Automatic
 
@@ -83,6 +83,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     // Validate `url`.
     // Pass it to your internal link parser to find the post ID and such.
     // Open in your thread/profile viewer component.
+    // We will validate URLs in the future, but for now, you will have to do so yourself.
 }
 ```
 
@@ -124,6 +125,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 ## Building
 In order to build Bluesky Redirect, you'll need the latest [Android Studio Canary](https://developer.android.com/studio/preview) build.
+
 ## Contributing
 If you want to add support for another app to **Bluesky Redirect**:
 
